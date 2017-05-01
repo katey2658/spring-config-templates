@@ -10,11 +10,16 @@
 
     <context:property-placeholder location="classpath:persistence-mysql.Properties"/>
 
-    <bean id="sessionFactory"
-      class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+    <tx:annotation-driven/>
+
+    <bean id="emf"
+      class="org.springframework.orm.jpa.LocalContainerEntityMangerFactoryBean">
       <property name="dataSource" ref="dataSource"/>
       <property name="packagesToScan" value=""/>
-      <property name="hibernateProperties">
+      <property name="jpaVendorAdapter">
+        <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
+      </property>
+      <property name="jpaProperties">
         <props>
           <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
           <prop key="hibernate.dialect">${hibernate.dialect}</prop>
@@ -36,4 +41,4 @@
 
     <bean id="PersistenceExceptionTranslationPostProcessor"
       class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
-  </beans>
+    </beans>

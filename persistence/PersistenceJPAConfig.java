@@ -1,7 +1,12 @@
 @Configuraiton
 @EnableTransactionManagement
+@EnableJpaRepositories(basePackages="")
+@ComponentScan(basePackages={""})
 public class PersistenceJPAConfig{
-
+  /**
+   * IN XML Configuration
+   * <jpa:repositories base-package=""/>
+   */
   private static final String KEY_DB_DRIVER="";
   private static final String KEY_DB_URL="";
   private static final String KEY_DB_USERNAME="";

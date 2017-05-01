@@ -40,7 +40,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplcationCont
   }
 
   @Bean
-  public SpringTemplateEngine templateEngine(){
+  public SpringTemplateEngine template8mEngine(){
     SpringTemplateEngine templateEngine=new SpringTemplateEngine();
     templateEngine.setTemplateResolver(templateResolver());
     templateEngine.setEnableSpringELComplier(true);
