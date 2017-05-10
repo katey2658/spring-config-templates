@@ -1,7 +1,7 @@
 @Configuration
 public class RpcProxyServiceConfig{
   /**
-   * rmi Service proxy factoryBean
+   * rmi Service  factoryBean proxy
    */
   @Bean
   public RmiProxyFactoryBean  rmiProxy(){
@@ -11,6 +11,10 @@ public class RpcProxyServiceConfig{
     return rmiProxy;
   }
 
+/**
+ * hessian Service factoryBean proxy
+ * @return [description]
+ */
   @Bean
   public HessianProxyFactoryBean hessianProxy(){
     HessianProxyFactoryBean hessianProxy=new HessianProxyFactoryBean();
@@ -18,7 +22,10 @@ public class RpcProxyServiceConfig{
     hessianProxy.setServiceInterface(IMyService.class);
     return hessianProxy;
   }
-
+  /**
+   * burlap Service factoryBean proxy
+   * @return [description]
+   */
   @Bean
   public BurlapProxyFactoryBean burlapProxy(){
     BurlapProxyFactoryBean burlapProxy=new BurlapProxyFactoryBean();
@@ -27,6 +34,10 @@ public class RpcProxyServiceConfig{
     return burlapProxy;
   }
 
+/**
+ * httpInvoker Service factoryBean proxy
+ * @return [description]
+ */
   @Bean
   public HttpInvokerProxyFactoryBean httpInvokerProxy(){
     HttpInvokerProxyFactoryBean httpInvokerProxy=new HttpInvokerProxyFactoryBean();
@@ -34,8 +45,4 @@ public class RpcProxyServiceConfig{
     httpInvokerProxy.setServiceInterface(IMyService.class);
     return httpInvokerProxy;
   }
-
-
-
-
 }

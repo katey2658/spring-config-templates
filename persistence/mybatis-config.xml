@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+  <!-- 属性外部可动态配置:配置顺序
+  1.在properties 元素中指定的属性首先被读取
+  2.然后根据properties元素中的resource属性读取类路径下属性文件或根据url属性的路径读取属性文件，并覆盖已经读取的同名属性
+  3.最后读取作为方法参数传递的 属性，并覆盖已经读取的同名属性
+ -->
+  <properties resource="org/mybatis/example/config.properties">
+    <!-- 启用上面的属性  如果想指定属性键 value 可以是: 或OGNL　？：-->
+    <property name="org.apache.ibatis.parsing.PropertyParser.enable-default-value" value="true"/>
+    <property name="username" value="katey"/>
+  </properties>
+  <settings>
+    <!-- 缓存全局开关 -->
+    <setting name="cacheEnabled" value="true"/>
+    <!-- 延迟加载全局开关 -->
+    <setting name="lazyLoadingEnabled" value="false"/>
+    <!-- 当开启，任何方法调用都会加载该对象全部属性，否则每个属性按需加载 -->
+    <setting name="aggressiveLazyLoading" value="false"/>
+    <!-- 是否允许单一语句返回多结果-->
+    <setting name="multipleResultSetEnabled" value="true"/>
+    <!-- 使用列标签代替列名 -->
+    <setting name="useColumnLabel" value="true"/>
+    <!--允许jdb自动生成主键 -->
+    <setting name="useGeneratedKeys" value="false"/>
+    <!-- 如何自动映射列到字段或者属性 NONE自动取消 PARTIAL 只会自动映射 FULL全自动 -->
+    <setting name="autoMappingBehavior" value="PARTIAL"/>
+    <!-- 指定发现自动映射未知类的行为 NONE：不做任何反应 WARING：输出提醒日志 FAILING 映射失败 -->
+    <setting name="autoMappiingUnknownColumnBehavior" value="NONE"/>
+    <!--默认的执行器 SIMPLE ：普通 REUSE:重用预处理语句 BATCH：执行器重用并批量更新-->
+    <setting name="defaultExceptorType" value="SIMPLE"/>
+    <!-- 超时时间 -->
+    <setting name="defaultStatementTimeout" value="1000"/>
+    <!-- 为结果集获取数量设置提示值 -->
+    <setting name="defaultFetchSize" value="100"/>
+    <!-- 允许在嵌套语句中使用分页 -->
+    <setting name="safeRowBoundsEnabled" value="false"/>
+    <!-- 允许嵌套语句中使用分页 -->
+    <setting name="safeResultHandlerEnabled" value="true"/>
+    <!-- 开启自动驼峰命名映射 -->
+    <setting name="mapUnderscoreToCamelCase" value="false"/>
+    <!-- 本地缓存机制 SESSION  | STATEMENT-->
+    <setting name="localCacheScope" value="SESSION"/>
+    <!-- jdbc为空时候指定jdbc类型  比如 NULL、VARCHAR 或 OTHER。-->
+    <setting name="jdbcTypeForNull" value="OTHER"/>
+    <!-- 指定那个对象的方法延迟加载 -->
+    <setting name="lazyLoadTriggerMethods" value="equals,clone,hashCode,toString"/>
+    <!--动态sql生成的默认语言-->
+    <setting name="defaultScriptingLanguage" value="org.apache.ibatis.scripting.xmltags.XMLLanguageDriver"/>
+    <!-- 结果集中null是否调用setter -->
+    <setting name="callSettersOnNulls" value="false"/>
+    <!-- 当返回所有列为空 返回一个空实例 -->
+    <setting name="returnInstanceForEmptyRow" value="false"/>
+    <!--日志名称前缀 -->
+    <setting name="logPrefix" value=""/>
+    <!-- 指定日志具体实现 -->
+    <setting name="logImpl" value=""/>
+    <!-- 具有延迟加载能力的对象用到的具体的代理工具 CGLIB | JAVASSIST -->
+    <setting name="proxyFactory" value="JAVASSIST"/>
+    <!-- 指定vfs实现 -->
+    <setting name="vfsImpl" value=""/>
+    <!-- 允许方法签名中名称作为语句参数 -->
+    <setting name="useActualParamName" value="true"/>
+    <!-- 指定Configuration 实例 -->
+    <setting name="configuration" value=""/>
+  </settings>
+  <!-- 类型别名可以用注解@Alias-->
+  <typeAlias>
+    <typeAlia alias="blog" type="domain.Blog"/>
+  </typeAlias>
+  <!-- 类型处理器 会覆盖原有的默认处理器
+  @MappedJdbcTypes(JdbcType.VARCHAR) 类注解
+  extends BaseTypeHandler<String> 继承 重写
+   -->
+  <typeHandlers>
+    <typeHandler handler="org.mybatis.example.ExampleTypeHandler"/>
+  </typeHandlers>
+  <!--对象工厂 覆盖工厂的默认行为 extends DefaultObjectFactory-->
+  <objectFactory type="org.mybatis.example.ExampleObjectFactory">
+    <property name="someProperty" value="100"/>
+  </objectFactory>
+  <!-- 插件  对过程中进行拦截调用
+  @Intercepts({@Signature(
+  type= Executor.class,
+  method = "update",
+  args = {MappedStatement.class,Object.class})})
+ implements Interceptor-->
+  <plugins>
+    <plugin interceptor="org.mybatis.example.ExamplePlugin">
+    <property name="someProperty" value="100"/>
+    </plugin>
+  </plugins>
+  <!-- 环境 -->
+  <environments default="development">
+    <environment id="development">
+      <!-- 事务管理器-->
+      <transactionManager type="JDBC">
+        <property name="..." value="..."/>
+      </transactionManager>
+      <!-- 数据源配置 POOLED POOL JNDI -->
+      <dataSource type="POOLED">
+        <property name="driver" value="${driver}"/>
+        <property name="url" value="${url}"/>
+        <property name="username" value="${username}"/>
+        <property name="password" value="${password}"/>
+      </dataSource>
+    </environment>
+    <environment id="test">
+      <transactionManager type="MANAGED">
+        <property name="closeConnection" value="false"/>
+      </transactionManager>
+      <dataSource type="POOLED">
+        <property name="driver" value="${driver}"/>
+        <property name="url" value="${url}"/>
+        <property name="username" value="${username}"/>
+        <property name="password" value="${password}"/>
+      </dataSource>
+    </environment>
+  </environments>
+  <!-- 对应与映射语句中databaseId属性，切换执行语句 -->
+  <databaseProvider tyep="DB_VENDOR">
+    <property name="SQL Server" value="sqlserver"/>
+    <property name="DB2" value="db2"/>
+    <property name="Oracle" value="oracle" />
+  </databaseProvider>
+<!--  映射器，选其中一种实现-->
+  <mappers>
+    <!-- 相对于类路径的资源引用 -->
+    <mapper resource="org/mybatis/builder/BlogMapper.xml"/>
+    <!-- 完全资源限定符 -->
+    <mapper url="file:///var/mappers/BlogMapper.xml"/>
+    <!--  类名-->
+    <mapper class="org.mybatis.builder.BlogMapper"/>
+    <!-- 依据包名 -->
+    <package name="org.mybatis.builder"/>
+  </mappers>
+</configuration>
